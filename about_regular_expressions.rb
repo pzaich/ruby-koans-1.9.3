@@ -3,32 +3,32 @@ require File.expand_path(File.dirname(__FILE__) + '/edgecase')
 
 class AboutRegularExpressions < EdgeCase::Koan
   def test_a_pattern_is_a_regular_expression
-    assert_equal __, /pattern/.class
+    assert_equal Regexp, /pattern/.class
   end
 
   def test_a_regexp_can_search_a_string_for_matching_content
-    assert_equal __, "some matching content"[/match/]
+    assert_equal "match", "some matching content"[/match/]
   end
 
   def test_a_failed_match_returns_nil
-    assert_equal __, "some matching content"[/missing/]
+    assert_equal nil, "some matching content"[/missing/]
   end
 
   # ------------------------------------------------------------------
 
   def test_question_mark_means_optional
-    assert_equal __, "abbcccddddeeeee"[/ab?/]
-    assert_equal __, "abbcccddddeeeee"[/az?/]
+    assert_equal "ab", "abbcccddddeeeee"[/ab?/]
+    assert_equal "a", "abbcccddddeeeee"[/az?/]
   end
 
   def test_plus_means_one_or_more
-    assert_equal __, "abbcccddddeeeee"[/bc+/]
+    assert_equal "bccc", "abbcccddddeeeee"[/bc+/]
   end
 
   def test_asterisk_means_zero_or_more
-    assert_equal __, "abbcccddddeeeee"[/ab*/]
-    assert_equal __, "abbcccddddeeeee"[/az*/]
-    assert_equal __, "abbcccddddeeeee"[/z*/]
+    assert_equal "abb", "abbcccddddeeeee"[/ab*/]
+    assert_equal "a", "abbcccddddeeeee"[/az*/]
+    assert_equal "", "abbcccddddeeeee"[/z*/]
 
     # THINK ABOUT IT:
     #
@@ -44,41 +44,41 @@ class AboutRegularExpressions < EdgeCase::Koan
   # ------------------------------------------------------------------
 
   def test_the_left_most_match_wins
-    assert_equal __, "abbccc az"[/az*/]
+    assert_equal "a", "abbccc az"[/az*/]
   end
 
   # ------------------------------------------------------------------
 
   def test_character_classes_give_options_for_a_character
     animals = ["cat", "bat", "rat", "zat"]
-    assert_equal __, animals.select { |a| a[/[cbr]at/] }
+    assert_equal ["cat", "bat", "rat"], animals.select { |a| a[/[cbr]at/] }
   end
 
   def test_slash_d_is_a_shortcut_for_a_digit_character_class
-    assert_equal __, "the number is 42"[/[0123456789]+/]
-    assert_equal __, "the number is 42"[/\d+/]
+    assert_equal "42", "the number is 42"[/[0123456789]+/]
+    assert_equal "42", "the number is 42"[/\d+/]
   end
 
   def test_character_classes_can_include_ranges
-    assert_equal __, "the number is 42"[/[0-9]+/]
+    assert_equal "42", "the number is 42"[/[0-9]+/]
   end
 
   def test_slash_s_is_a_shortcut_for_a_whitespace_character_class
-    assert_equal __, "space: \t\n"[/\s+/]
+    assert_equal " \t\n", "space: \t\n"[/\s+/]
   end
 
   def test_slash_w_is_a_shortcut_for_a_word_character_class
     # NOTE:  This is more like how a programmer might define a word.
-    assert_equal __, "variable_1 = 42"[/[a-zA-Z0-9_]+/]
-    assert_equal __, "variable_1 = 42"[/\w+/]
+    assert_equal "variable_1", "variable_1 = 42"[/[a-zA-Z0-9_]+/]
+    assert_equal "variable_1", "variable_1 = 42"[/\w+/]
   end
 
   def test_period_is_a_shortcut_for_any_non_newline_character
-    assert_equal __, "abc\n123"[/a.+/]
+    assert_equal "abc", "abc\n123"[/a.+/]
   end
 
   def test_a_character_class_can_be_negated
-    assert_equal __, "the number is 42"[/[^0-9]+/]
+    assert_equal "the number is ", "the number is 42"[/[^0-9]+/]
   end
 
   def test_shortcut_character_classes_are_negated_with_capitals
